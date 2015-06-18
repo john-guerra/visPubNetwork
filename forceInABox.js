@@ -8,7 +8,7 @@ d3.layout.forceInABox = function () {
         tree,
         foci = {},
         oldStart = force.start,
-        oldLinkStrength = force.linkStrength(),
+        linkStrengthInsideCluster = force.linkStrength(),
         oldGravity = force.gravity(),
         treeMapNodes = [],
         groupBy = "cluster",
@@ -64,6 +64,12 @@ d3.layout.forceInABox = function () {
         return force;
     };
 
+    force.linkStrengthInsideCluster = function (x) {
+        if (!arguments.length) return linkStrengthInsideCluster;
+        linkStrengthInsideCluster = x;
+        return force;
+    };
+
     force.treemapSize = function (x) {
         if (!arguments.length) return treemapSize !== undefined ? treemapSize : force.size();
         treemapSize = x;
@@ -71,11 +77,11 @@ d3.layout.forceInABox = function () {
     };
 
     force.linkStrength(function (e) {
-        if (!enableGrouping || e.source[groupBy] === e.target[groupBy]) {
-            if (typeof(oldLinkStrength)==="function") {
-                return oldLinkStrength(e);
+        if (!force.enableGrouping() || e.source[groupBy] === e.target[groupBy]) {
+            if (typeof(linkStrengthInsideCluster)==="function") {
+                return linkStrengthInsideCluster(e);
             } else {
-                return oldLinkStrength;
+                return linkStrengthInsideCluster;
             }
         } else {
             if (typeof(linkStrengthInterCluster)==="function") {
@@ -85,6 +91,7 @@ d3.layout.forceInABox = function () {
             }
         }
     });
+
 
 
     function computeClustersCounts(nodes) {
@@ -138,8 +145,8 @@ d3.layout.forceInABox = function () {
         foci.none = {x : 0, y : 0};
         treeMapNodes.forEach(function (d) {
             foci[d.id] = {
-                x : 200 + (d.x + d.dx / 2),
-                y : 200 + (d.y + d.dy / 2)
+                x : 50 + (d.x + d.dx / 2),
+                y : 50 + (d.y + d.dy / 2)
             };
         });
 

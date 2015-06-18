@@ -23,7 +23,7 @@ d3.select("#sliderMinLink").on("change", reload)
 	});
 d3.select("#sliderMinNode").on("change", reload)
 	.on("input", function (d) {
-		d3.select("#sliderLabelMinNode").html("Min node value: " + d3.select("#sliderMinNode").property("value"));
+		d3.select("#sliderLabelMinNode").html("Min node value (labels): " + d3.select("#sliderMinNode").property("value"));
 	});
 
 
@@ -56,14 +56,15 @@ svg.append("svg:g").attr("id", "texts");
 
 var force  = d3.layout.forceInABox()
 	    .size([w, h])
-	    .treemapSize([w/2, h/2])
+	    .treemapSize([w-200, h-200])
 	    .enableGrouping(d3.select("#checkboxGroup").property("checked"))
 	    .linkDistance(50)
-	    .gravity(0.1)
-	    .linkStrengthInterCluster(0.01)
-	    .gravityToFoci(0.2)
-	    .linkStrength(0.2)
-	    .charge(-200);
+	    .gravityOverall(0.001)
+	    .linkStrengthInsideCluster(0.3)
+	    .linkStrengthInterCluster(0.05)
+	    .gravityToFoci(0.15)
+
+	    .charge(-100);
 
 var rScale = d3.scale.linear().range([2, 20]);
 var yScale = d3.scale.linear().range([h-20, 20]);
@@ -103,10 +104,15 @@ function update( nodes, edges) {
 	    .data(force.links(), function (e) { return e.source.name + "|" + e.target.name; });
   	path.enter().append("svg:path")
 	    .attr("class", function(d) { return "link "; })
-	    .style("stroke-width", "2px");
+	    .style("stroke-width", "2px")
+	    .append("title")
+
 
 	path.attr("marker-end", function(d) { return "url(#" + d.type + ")"; })
 		.style("stroke-opacity", function(d) { return lOpacity(d.value); });
+
+	path.select("title")
+		.text(function (d) { return ""})
 
 	path.exit().remove();
 

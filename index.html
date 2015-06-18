@@ -43,7 +43,9 @@
 </style>
 <body>
 
-<label for="checkboxGroup">Group?</label> <input id="checkboxGroup" type="checkbox"  />
+<h1>IEEE Vis Papers citation network </h1>
+
+<label for="checkboxGroup">Group?</label> <input id="checkboxGroup" type="checkbox" checked="true" />
 <select name="type" id="selectType">
 	<option value="Citations">Citations</option>
 	<option value="Coauthorship">Coauthorship</option>
@@ -52,15 +54,13 @@
             <label id="sliderLabelMinLink" for="sliderMinLink">
               Min link value: 5
 </label>
-<input id="sliderMinNode" type="range" min="2" max="700" value="200"/>
+<input id="sliderMinNode" type="range" min="2" max="700" value="400"/>
             <label id="sliderLabelMinNode" for="sliderMinNode">
-              Min node value: 200
+              Min node value (labels): 400
 </label>
 <div id="chart"></div>
 <script src="d3.js" language="javascript" type="text/javascript"></script>
-<script src="flickr_utils.js" language="javascript" type="text/javascript"></script>
-<script src="flickrExample.js" language="javascript" type="text/javascript"></script>
 <script type="text/javascript" src="forceInABox.js"></script>
 <script type="text/javascript" src="getVisNetworks.js"></script>
 <script type="text/javascript" src="http://dutovis.com/netAnalysisJs/netClustering.js">   </script>
-<script src="mainVis.js" language="javascript" type="text/javascript"></script>
+<script src="main.js" language="javascript" type="text/javascript"></script>
