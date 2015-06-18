@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+	#chart rect {
+		fill: white;
+	}
+	path.link {
+		fill: none;
+		stroke: #666;
+		stroke-width: 2px;
+	}
+
+	marker#licensing {
+		fill: lightgreen;
+	}
+
+	path.link.licensing {
+		stroke: lightgreen;
+	}
+
+	path.link.resolved {
+		stroke-dasharray: 0,2 1;
+	}
+
+	circle {
+		fill: #ccc;
+		stroke: #333;
+		stroke-width: 3px;
+	}
+
+	text {
+		font: 14px sans-serif;
+		pointer-events: none;
+	}
+
+	text.shadow {
+		stroke: #fff;
+		stroke-width: 4px;
+	}
+
+
+</style>
+<body>
+
+<label for="checkboxGroup">Group?</label> <input id="checkboxGroup" type="checkbox"  />
+<select name="type" id="selectType">
+	<option value="Citations">Citations</option>
+	<option value="Coauthorship">Coauthorship</option>
+</select>
+<input id="sliderMinLink" type="range" min="2" max="20" value="5"/>
+            <label id="sliderLabelMinLink" for="sliderMinLink">
+              Min link value: 5
+</label>
+<input id="sliderMinNode" type="range" min="2" max="700" value="200"/>
+            <label id="sliderLabelMinNode" for="sliderMinNode">
+              Min node value: 200
+</label>
+<div id="chart"></div>
+<script src="d3.js" language="javascript" type="text/javascript"></script>
+<script src="flickr_utils.js" language="javascript" type="text/javascript"></script>
+<script src="flickrExample.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="forceInABox.js"></script>
+<script type="text/javascript" src="getVisNetworks.js"></script>
+<script type="text/javascript" src="http://dutovis.com/netAnalysisJs/netClustering.js">   </script>
+<script src="mainVis.js" language="javascript" type="text/javascript"></script>
