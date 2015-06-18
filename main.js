@@ -56,14 +56,13 @@ svg.append("svg:g").attr("id", "texts");
 
 var force  = d3.layout.forceInABox()
 	    .size([w, h])
-	    .treemapSize([w-200, h-200])
+	    .treemapSize([w-300, h-300])
 	    .enableGrouping(d3.select("#checkboxGroup").property("checked"))
 	    .linkDistance(50)
 	    .gravityOverall(0.001)
 	    .linkStrengthInsideCluster(0.3)
 	    .linkStrengthInterCluster(0.05)
-	    .gravityToFoci(0.15)
-
+	    .gravityToFoci(0.35)
 	    .charge(-100);
 
 var rScale = d3.scale.linear().range([2, 20]);
@@ -75,11 +74,11 @@ var lOpacity = d3.scale.linear().range([0.1, 0.9]);
 
 
 function nodeName (d) {
-	return d.name + " (" + d.numCitations + ")";
+	return d.name + " (" + d.value + ")";
 }
 
 function nodeNameCond (d) {
-	return d.numCitations > MIN_NODE_VAL ? nodeName(d): "";
+	return d.value > MIN_NODE_VAL ? nodeName(d): "";
 }
 
 function update( nodes, edges) {
@@ -94,8 +93,8 @@ function update( nodes, edges) {
 
 
 
-	rScale.domain([0, d3.max(nodes, function (d) { return d.numCitations; } )]);
-	yScale.domain([0, d3.max(nodes, function (d) { return d.numCitations; } )]);
+	rScale.domain([0, d3.max(nodes, function (d) { return d.value; } )]);
+	yScale.domain([0, d3.max(nodes, function (d) { return d.value; } )]);
 	lOpacity.domain(d3.extent(edges, function (d) { return d.value; } ));
 
 
@@ -112,7 +111,7 @@ function update( nodes, edges) {
 		.style("stroke-opacity", function(d) { return lOpacity(d.value); });
 
 	path.select("title")
-		.text(function (d) { return ""})
+		.text(function (e) { return e.source.name + " to " + e.target.name + " (" + e.value + ")"; });
 
 	path.exit().remove();
 
@@ -120,7 +119,7 @@ function update( nodes, edges) {
 	var circle = svg.select("#nodes").selectAll("circle")
 	    .data(force.nodes(), function (d) { return d.name; });
 	circle.enter().append("svg:circle")
-	    .attr("r", function (d) { return rScale(d.numCitations); })
+	    .attr("r", function (d) { return rScale(d.value); })
 	    .call(force.drag)
 	    .append("title")
 	    .text(nodeName);
@@ -169,7 +168,7 @@ function update( nodes, edges) {
 			// c = nodes[o.type];
 			// o.x += (c.x - o.x) * k;
 			// o.x += (xScale(o.name.charCodeAt(0)) - o.x) * k;
-			// o.y += (yScale(o.numCitations) - o.y) * k;
+			// o.y += (yScale(o.value) - o.y) * k;
 			q.visit(collide(o));
 		}
 
@@ -191,7 +190,7 @@ function update( nodes, edges) {
 }
 
 function collide(node) {
-  var r = rScale(node.numCitations) + 16,
+  var r = rScale(node.value) + 16,
       nx1 = node.x - r,
       nx2 = node.x + r,
       ny1 = node.y - r,
@@ -201,7 +200,7 @@ function collide(node) {
       var x = node.x - quad.point.x,
           y = node.y - quad.point.y,
           l = Math.sqrt(x * x + y * y),
-          r = rScale(node.numCitations) + rScale(quad.point.numCitations);
+          r = rScale(node.value) + rScale(quad.point.value);
       if (l < r) {
         l = (l - r) / l * .5;
         node.px += x * l;

@@ -9,7 +9,7 @@ getCitationNetwork = function (data, minLinkValue) {
 
     function getNodeOrCreate(t, node) {
         if (!nodesMap.has(t)) {
-            nodesMap.set(t, {"name":t, "numCitations":0, "numPapers": 0, "node":node});
+            nodesMap.set(t, {"name":t, "value":0, "numPapers": 0, "node":node});
         }
         return nodesMap.get(t);
 
@@ -45,7 +45,7 @@ getCitationNetwork = function (data, minLinkValue) {
         	source["Deduped author names"].split(";").forEach(function (sa){
                 addCount(sa, target, "numPapers");
         		target["Deduped author names"].split(";").forEach(function (ta){
-        			addCount(ta, target, "numCitations");
+        			addCount(ta, target, "value");
         			if (sa==="Cox, D. C." || ta==="Cox, D. C.") { return; }
         			if (sa===ta) { return; }
         			var key = sa + "|" + ta;

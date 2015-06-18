@@ -141,12 +141,15 @@ d3.layout.forceInABox = function () {
         tree = getGroupsTree();
         treeMapNodes = treemap.nodes(tree);
 
+        var marginX = (force.size()[0] - force.treemapSize()[0]) /2;
+        var marginY = (force.size()[1] - force.treemapSize()[1]) /2;
+
         //compute foci
         foci.none = {x : 0, y : 0};
         treeMapNodes.forEach(function (d) {
             foci[d.id] = {
-                x : 50 + (d.x + d.dx / 2),
-                y : 50 + (d.y + d.dy / 2)
+                x : marginX + (d.x + d.dx / 2),
+                y : marginY + (d.y + d.dy / 2)
             };
         });
 
