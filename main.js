@@ -81,12 +81,12 @@ function nodeNameCond (d) {
 	return d.value > MIN_NODE_VAL ? nodeName(d): "";
 }
 
-function update( nodes, edges) {
+function update( nodes, links) {
 	// force = d3.layout.force()
 	force.stop();
 	force
 	    .nodes(nodes)
-	    .links(edges)
+	    .links(links)
 	    .enableGrouping(d3.select("#checkboxGroup").property("checked"))
 	    .on("tick", tick)
 	    .start();
@@ -95,7 +95,7 @@ function update( nodes, edges) {
 
 	rScale.domain([0, d3.max(nodes, function (d) { return d.value; } )]);
 	yScale.domain([0, d3.max(nodes, function (d) { return d.value; } )]);
-	lOpacity.domain(d3.extent(edges, function (d) { return d.value; } ));
+	lOpacity.domain(d3.extent(links, function (d) { return d.value; } ));
 
 
 
@@ -222,21 +222,75 @@ function reload() {
 	if (data === undefined) { return; }
 	if (d3.select("#selectType").property("value")==="Coauthorship") {
 		network = getCoauthorNetwork(data, MIN_EDGE_VAL);
+		console.log(network);
 	} else {
 		network = getCitationNetwork(data, MIN_EDGE_VAL);
+		console.log(network);
 	}
 
-	netClustering.cluster(network.nodes, network.edges);
+	netClustering.cluster(network.nodes, network.links);
 
-	update(network.nodes, network.edges);
+	d3.select("#downloadButton").on("click", function() {
+		downloadData(network);
+	});
+
+	update(network.nodes, network.links);
 }
 
 d3.csv(url, function (error, mdata) {
 
 
 	data = mdata;
-
-
 	reload();
 
 });
+
+function downloadData(network) {
+//Code from http://stackoverflow.com/questions/11849562/how-to-save-the-output-of-a-console-logobject-to-a-file
+
+  if(!network) {
+      console.error('Console.save: No network')
+      return;
+  }
+	var netProcessed = {}
+  netProcessed.links = network.links.map(function (d) {
+  	return {
+  		source:network.nodes.indexOf(d.source),
+  		target:network.nodes.indexOf(d.target)
+  	}
+  });
+  netProcessed.nodes = network.nodes.map(function (d) {
+  	var e = {};
+  	var attr;
+  	for (attr in d) {
+  		if (attr === "node") continue;
+  		e[attr.replace(new RegExp("[^A-Za-z0-9]", 'g'),"")]=d[attr];
+  	}
+  	e.node = {};
+  	for (attr in d.node) {
+  		e.node[attr.replace(new RegExp("[^A-Za-z0-9]", 'g'),"")]=d.node[attr];
+  	}
+  	return e;
+  })
+
+  //Remove spaces from keys
+
+
+
+  var filename = 'network.json'
+
+  if(typeof netProcessed === "object"){
+      netProcessed = JSON.stringify(netProcessed, undefined, 4)
+  }
+
+  var blob = new Blob([netProcessed], {type: 'text/json'}),
+      e    = document.createEvent('MouseEvents'),
+      a    = document.createElement('a')
+
+  a.download = filename
+  a.href = window.URL.createObjectURL(blob)
+  a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
+  e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+  a.dispatchEvent(e)
+
+}

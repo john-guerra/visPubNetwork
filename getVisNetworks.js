@@ -46,7 +46,7 @@ getCitationNetwork = function (data, minLinkValue) {
                 addCount(sa, target, "numPapers");
         		target["Deduped author names"].split(";").forEach(function (ta){
         			addCount(ta, target, "value");
-        			if (sa==="Cox, D. C." || ta==="Cox, D. C.") { return; }
+        			// if (sa==="Cox, D. C." || ta==="Cox, D. C.") { return; }
         			if (sa===ta) { return; }
         			var key = sa + "|" + ta;
 	                if (edgesCount.has(key)){
@@ -76,7 +76,7 @@ getCitationNetwork = function (data, minLinkValue) {
             value:d.value
         };
     });
-    return {"nodes":nodes, "edges":edges};
+    return {"nodes":nodes, "links":edges};
 };
 
 //builds a d3 network author collaboration
@@ -139,5 +139,5 @@ getCoauthorNetwork = function (data, minLinkValue) {
             value:d.value
         };
     });
-    return {"nodes":nodes, "edges":edges};
+    return {"nodes":nodes, "links":edges};
 };
