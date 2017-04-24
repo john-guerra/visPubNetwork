@@ -24,22 +24,25 @@ getCitationNetwork = function (data, minLinkValue) {
 
     data.forEach(function (d) {
     	papersMap.set(d.filename, d);
-    	papersMap.set(d["IEEE XPLORE Article Number"], d);
+    	papersMap.set(d["Paper DOI"], d);
     });
 
     data.forEach(function (d) {
-    	if (d.Citations === undefined) {
+    	if (d.References === undefined) {
     		return;
     	}
         var citations;
-        if (d.Citations.indexOf(",")!== -1) {
-        	citations = d.Citations.split(",");
+        if (d.References.indexOf(",")!== -1) {
+        	citations = d.References.split(",");
         }else {
-        	citations = d.Citations.split(";");
+        	citations = d.References.split(";");
         }
+        if (!citations) return;
 
         var source = d;
+
         citations.forEach(function (c) {
+            if (!c) return;
         	var target = papersMap.get(c);
 
         	source["Deduped author names"].split(";").forEach(function (sa){
