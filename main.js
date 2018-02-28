@@ -98,22 +98,27 @@ function update( nodes, links) {
   lOpacity.domain(d3.extent(links, function (d) { return d.value; } ));
 
 
-
   var path = svg.select("#paths").selectAll("path")
+        .data(force.links(), function (e) { return e.source.name + "|" + e.target.name; });
+
+  path = svg.select("#paths").selectAll("path")
       .data(force.links(), function (e) { return e.source.name + "|" + e.target.name; });
-    path.enter().append("svg:path")
-      .attr("class", function(d) { return "link "; })
-      .style("stroke-width", "2px")
-      .append("title")
+
+  path.enter().append("svg:path")
+    .attr("class", function() { return "link "; })
+    .style("stroke-width", "2px")
+    .append("title");
 
 
   path.attr("marker-end", function(d) { return "url(#" + d.type + ")"; })
-    .style("stroke-opacity", function(d) { return lOpacity(d.value); });
+    .style("stroke-opacity", function(d) { return lOpacity(d.value); })
+    .attr("d", null );
 
   path.select("title")
     .text(function (e) { return e.source.name + " to " + e.target.name + " (" + e.value + ")"; });
 
   path.exit().remove();
+
 
 
   var circle = svg.select("#nodes").selectAll("circle")
@@ -172,12 +177,15 @@ function update( nodes, links) {
       q.visit(collide(o));
     }
 
-    path.attr("d", function(d) {
-      var dx = d.target.x - d.source.x,
-          dy = d.target.y - d.source.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
-      return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-    });
+    // Only draw links when the network settles down
+    if (force.alpha() < 0.05) {
+      path.attr("d", function(d) {
+        var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y,
+            dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+      });
+    }
 
     circle.attr("transform", function(d) {
       return "translate(" + d.x + "," + d.y + ")";
