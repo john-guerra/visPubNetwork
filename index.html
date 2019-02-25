@@ -1,49 +1,58 @@
 <!DOCTYPE html>
+<head>
+  <meta name="Description" content="Author: John Alexis Guerra Gómez,
+    Description: Citation Network Visualization of the IEEEVIS publication data, Category: Data Visualization">
+  <meta name="author" content="John Alexis Guerra Gómez">
+  <title>Citation Network Visualization of the IEEEVIS publication data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
 <style>
 
   body {
     font-family: sans-serif;
   }
-	#chart rect {
-		fill: white;
-	}
-	path.link {
-		fill: none;
-		stroke: #666;
-		stroke-width: 2px;
-	}
+  #chart rect {
+    fill: white;
+  }
+  path.link {
+    fill: none;
+    stroke: #666;
+    stroke-width: 2px;
+  }
 
-	marker#licensing {
-		fill: lightgreen;
-	}
+  marker#licensing {
+    fill: lightgreen;
+  }
 
-	path.link.licensing {
-		stroke: lightgreen;
-	}
+  path.link.licensing {
+    stroke: lightgreen;
+  }
 
-	path.link.resolved {
-		stroke-dasharray: 0,2 1;
-	}
+  path.link.resolved {
+    stroke-dasharray: 0,2 1;
+  }
 
-	circle {
-		fill: #ccc;
-		stroke: #333;
-		stroke-width: 3px;
-	}
+  circle {
+    fill: #ccc;
+    stroke: #333;
+    stroke-width: 3px;
+  }
 
-	text {
-		font: 14px sans-serif;
-		pointer-events: none;
-	}
+  text {
+    font: 14px sans-serif;
+    pointer-events: none;
+  }
 
-	text.shadow {
-		stroke: #fff;
-		stroke-width: 4px;
-	}
+  text.shadow {
+    stroke: #fff;
+    stroke-width: 4px;
+  }
 
 
 </style>
+
+</head>
+
 <body>
 
 <h1>IEEE Vis Papers citation/co-authorship networks (1990-2018)</h1>
