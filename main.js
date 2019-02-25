@@ -2,7 +2,7 @@
 /* global d3: true, $: false, alert: false, TreeMap: false , FlickrUtils: true, console: true, utils: true */
 
 
-var url = "IEEE VIS papers 1990-2016 - Main dataset.csv";
+var url = "IEEE VIS papers 1990-2018 - Main dataset.csv";
 
 var w = 1200,
     h = 800;

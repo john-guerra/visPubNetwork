@@ -25,19 +25,19 @@ getCitationNetwork = function (data, minLinkValue) {
   }
 
   data.forEach(function (d) {
-    papersMap.set(d.filename, d);
-    papersMap.set(d["Paper DOI"], d);
+    papersMap.set(d.Link, d);
+    papersMap.set(d.DOI, d);
   });
 
   data.forEach(function (d) {
-    if (d.References === undefined) {
+    if (d.InternalReferences === undefined) {
       return;
     }
     var citations;
-    if (d.References.indexOf(",")!== -1) {
-      citations = d.References.split(",");
+    if (d.InternalReferences.indexOf(",")!== -1) {
+      citations = d.InternalReferences.split(",");
     }else {
-      citations = d.References.split(";");
+      citations = d.InternalReferences.split(";");
     }
     if (!citations) return;
 
@@ -47,9 +47,9 @@ getCitationNetwork = function (data, minLinkValue) {
       if (!c) return;
       var target = papersMap.get(c);
 
-      source["Author Names"].split(";").forEach(function (sa){
+      source["AuthorNames-Deduped"].split(";").forEach(function (sa){
         addCount(sa, target, "numPapers");
-        target["Author Names"].split(";").forEach(function (ta){
+        target["AuthorNames-Deduped"].split(";").forEach(function (ta){
           addCount(ta, target, "value");
           // if (sa==="Cox, D. C." || ta==="Cox, D. C.") { return; }
           if (sa===ta) { return; }
@@ -117,7 +117,7 @@ getCoauthorNetwork = function (data, minLinkValue) {
   }
 
   data.forEach(function (d) {
-    var author = d["Author Names"].split(";");
+    var author = d["AuthorNames-Deduped"].split(";");
     author.forEach(function (t1) {
       author.forEach(function (t2) {
         if (t1===t2) {
