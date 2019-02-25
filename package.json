@@ -1,0 +1,23 @@
+{
+  "name": "visPubNetwork",
+  "version": "1.0.0",
+  "description": "Citation Network of the IEEE Vis papers",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/john-guerra/visPubNetwork.git"
+  },
+  "keywords": [],
+  "author": "John Alexis Guerra Gómez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/john-guerra/visPubNetwork/issues"
+  },
+  "homepage": "https://github.com/john-guerra/visPubNetwork#readme",
+  "devDependencies": {
+    "eslint": "^5.14.1"
+  }
+}

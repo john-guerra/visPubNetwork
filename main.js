@@ -1,17 +1,17 @@
 /* jslint browser: true, indent: 4 */
-/* global d3: true, $: false, alert: false, TreeMap: false , FlickrUtils: true, console: true, utils: true */
+/* global d3: true, console: true, getCoauthorNetwork, getCitationNetwork, netClustering  */
 
 
 var url = "IEEE VIS papers 1990-2018 - Main dataset.csv";
 
 var w = 1200,
-    h = 800;
+  h = 800;
 
 var MIN_NODE_VAL = 200;
 var MIN_EDGE_VAL = 5;
 
 var network;
-var type = "Citations";
+// var type = "Citations";
 var data;
 
 
@@ -67,7 +67,7 @@ var force  = d3.layout.forceInABox()
 
 var rScale = d3.scale.linear().range([2, 20]);
 var yScale = d3.scale.linear().range([h-20, 20]);
-var xScale = d3.scale.linear().domain(["a".charCodeAt(0), "z".charCodeAt(0)]).range([0, w]);
+// var xScale = d3.scale.linear().domain(["a".charCodeAt(0), "z".charCodeAt(0)]).range([0, w]);
 var colScale = d3.scale.category20();
 var lOpacity = d3.scale.linear().range([0.1, 0.9]);
 
@@ -180,10 +180,11 @@ function update( nodes, links) {
     // Only draw links when the network settles down
     if (force.alpha() < 0.05) {
       path.attr("d", function(d) {
-        var dx = d.target.x - d.source.x,
-            dy = d.target.y - d.source.y,
-            dr = Math.sqrt(dx * dx + dy * dy);
-        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+        // var dx = d.target.x - d.source.x,
+        //     dy = d.target.y - d.source.y,
+        //     dr = Math.sqrt(dx * dx + dy * dy);
+        // return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
       });
     }
 
@@ -267,7 +268,7 @@ function downloadData(network) {
       target:network.nodes.indexOf(d.target),
       type:d.type,
       value:d.value
-    }
+    };
   });
   netProcessed.nodes = network.nodes.map(function (d) {
     var e = {};
@@ -281,7 +282,7 @@ function downloadData(network) {
       e.node[attr.replace(new RegExp("[^A-Za-z0-9]", "g"),"")]=d.node[attr];
     }
     return e;
-  })
+  });
 
   //Remove spaces from keys
 
@@ -295,12 +296,12 @@ function downloadData(network) {
 
   var blob = new Blob([netProcessed], {type: "text/json"}),
       e    = document.createEvent("MouseEvents"),
-      a    = document.createElement("a")
+      a    = document.createElement("a");
 
-  a.download = filename
-  a.href = window.URL.createObjectURL(blob)
-  a.dataset.downloadurl =  ["text/json", a.download, a.href].join(":")
-  e.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-  a.dispatchEvent(e)
+  a.download = filename;
+  a.href = window.URL.createObjectURL(blob);
+  a.dataset.downloadurl =  ["text/json", a.download, a.href].join(":");
+  e.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  a.dispatchEvent(e);
 
 }
