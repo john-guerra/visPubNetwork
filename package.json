@@ -1,5 +1,5 @@
 {
-  "name": "visPubNetwork",
+  "name": "vispubnetwork",
   "version": "1.0.0",
   "description": "Citation Network of the IEEE Vis papers",
   "main": "main.js",
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/john-guerra/visPubNetwork#readme",
   "devDependencies": {
-    "eslint": "^5.14.1"
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.8.8"
   }
 }
