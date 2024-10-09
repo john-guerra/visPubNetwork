@@ -55,7 +55,7 @@ const getCitationNetwork = function (data, minLinkValue) {
       if (!target) return;
 
       (source["AuthorNames-Deduped"]||source["AuthorNames"]).split(";").forEach(function (sa) {
-        addCount(sa, target, "numPapers");
+        addCount(sa, source, "numPapers");
         (target["AuthorNames-Deduped"]||target["AuthorNames"]).split(";").forEach(function (ta) {
           addCount(ta, target, "value");
           // if (sa==="Cox, D. C." || ta==="Cox, D. C.") { return; }
