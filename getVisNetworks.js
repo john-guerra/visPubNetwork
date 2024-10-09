@@ -54,9 +54,9 @@ const getCitationNetwork = function (data, minLinkValue) {
       let target = papersMap.get(c);
       if (!target) return;
 
-      source["AuthorNames-Deduped"].split(";").forEach(function (sa) {
+      (source["AuthorNames-Deduped"]||source["AuthorNames"]).split(";").forEach(function (sa) {
         addCount(sa, target, "numPapers");
-        target["AuthorNames-Deduped"].split(";").forEach(function (ta) {
+        (target["AuthorNames-Deduped"]||target["AuthorNames"]).split(";").forEach(function (ta) {
           addCount(ta, target, "value");
           // if (sa==="Cox, D. C." || ta==="Cox, D. C.") { return; }
           if (sa === ta) {
@@ -130,7 +130,7 @@ const getCoauthorNetwork = function (data, minLinkValue) {
   }
 
   data.forEach(function (d) {
-    let author = d["AuthorNames-Deduped"].split(";");
+    let author = (d["AuthorNames-Deduped"]||d["AuthorNames"]).split(";");
     author.forEach(function (t1) {
       author.forEach(function (t2) {
         if (t1 === t2) {

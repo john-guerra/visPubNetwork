@@ -1,6 +1,6 @@
 /* global d3, console: true, getCoauthorNetwork, getCitationNetwork, netClustering, forceInABox, navio  */
 
-let url = "IEEE VIS papers 1990-2022 - Main dataset.csv";
+let url = "IEEE VIS papers 1990-2023 - Main dataset.csv";
 
 let w = 800,
   h = 600;
@@ -241,6 +241,7 @@ function reload() {
     update(network.nodes, network.links);
   }
 
+  // document.querySelector("#navio").innerHTML = "";
   nv.data(data);
   nv.addAllAttribs();
   nv.updateCallback(redraw);
