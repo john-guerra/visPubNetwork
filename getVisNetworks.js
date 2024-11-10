@@ -130,7 +130,12 @@ const getCoauthorNetwork = function (data, minLinkValue) {
   }
 
   data.forEach(function (d) {
-    let author = (d["AuthorNames-Deduped"]||d["AuthorNames"]).split(";");
+    let author = (d["AuthorNames-Deduped"]||d["AuthorNames"]);
+    if (!author) {
+      console.log("🚫 paper without authors", d.Title, d);
+      return;
+    }
+    author = author.split(";");
     author.forEach(function (t1) {
       author.forEach(function (t2) {
         if (t1 === t2) {
